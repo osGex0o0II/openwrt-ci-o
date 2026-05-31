@@ -1,4 +1,4 @@
-name: ZN-M2
+name: ZN-M2 1G HomeProxy
 
 on:
   workflow_dispatch:
@@ -9,17 +9,19 @@ permissions:
 env:
   REPO_URL: https://github.com/LiBwrt/openwrt-6.x.git
   REPO_BRANCH: main-nss
-  CONFIG_FILE: configs/zn-m2.config
+  CONFIG_FILE: configs/zn-m2-1g-homeproxy.config
   DIY_SCRIPT: libwrt.sh
+  INCLUDE_HOMEPROXY: "1"
+  VARIANT_FILES: ""
   CACHE_TOOLCHAIN: true
   UPLOAD_BIN_DIR: false
   FIRMWARE_RELEASE: true
-  FIRMWARE_TAG: ZN-M2-6.12-NSS
+  FIRMWARE_TAG: ZN-M2-1G-6.12-NSS-HomeProxy
   TZ: Asia/Shanghai
 
 jobs:
   build:
-    name: Build ZN-M2 firmware
+    name: Build ZN-M2 1G HomeProxy firmware
     runs-on: ubuntu-latest
 
     steps:
@@ -81,7 +83,7 @@ jobs:
         uses: HiGarfield/cachewrtbuild@main
         with:
           ccache: false
-          mixkey: ${{ env.SOURCE_REPO }}-${{ env.REPO_BRANCH }}-${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}-zn-m2
+          mixkey: ${{ env.SOURCE_REPO }}-${{ env.REPO_BRANCH }}-${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}-zn-m2-1g-homeproxy
           prefix: ${{ env.OPENWRT_PATH }}
 
       - name: Install feeds
@@ -92,7 +94,8 @@ jobs:
 
       - name: Apply custom files and packages
         run: |
-          [ -d files ] && mv files "$OPENWRT_PATH/files"
+          [ -d files ] && mkdir -p "$OPENWRT_PATH/files" && cp -a files/. "$OPENWRT_PATH/files/"
+          [ -n "$VARIANT_FILES" ] && [ -d "$VARIANT_FILES" ] && cp -a "$VARIANT_FILES"/. "$OPENWRT_PATH/files/"
           cp "$CONFIG_FILE" "$OPENWRT_PATH/.config"
           dos2unix "$DIY_SCRIPT"
           chmod +x "$DIY_SCRIPT"
@@ -103,6 +106,10 @@ jobs:
         run: |
           cd "$OPENWRT_PATH"
           make defconfig
+          grep -q '^CONFIG_TARGET_qualcommax_ipq60xx_DEVICE_zn_m2=y$' .config
+          grep -q '^CONFIG_TARGET_PROFILE="DEVICE_zn_m2"$' .config
+          grep -q '^CONFIG_PACKAGE_luci-app-homeproxy=y$' .config
+          grep -q '^CONFIG_PACKAGE_sing-box=y$' .config
           make download -j"$(nproc)"
           find dl -size -1024c -print -delete
 
@@ -151,7 +158,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           artifacts: ${{ env.FIRMWARE_PATH }}/*
           body: |
-            **ZN-M2 LiBwrt 6.12 NSS wired-only firmware**
+            **ZN-M2 1G LiBwrt 6.12 NSS HomeProxy firmware**
 
             - Source: ${{ env.REPO_URL }}
             - Branch: ${{ env.REPO_BRANCH }}

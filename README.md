@@ -1,33 +1,31 @@
-# ZN-M2 LiBwrt 6.12 NSS Build
+# ZN-M2 LiBwrt 6.12 NSS Builds
 
-This repository is a single-device GitHub Actions build for the ZN-M2
-IPQ60xx router. It targets LiBwrt `openwrt-6.x` `main-nss` and keeps the image
-wired-only, storage-free, and focused on HomeProxy with sing-box.
+This repository builds wired-only LiBwrt `openwrt-6.x` `main-nss` firmware for
+ZN-M2. It now has two separate variants for the upgraded 1G RAM unit and the
+original 128M RAM unit.
 
-## Build Target
+## Variants
 
-- Device: ZN-M2 (`qualcommax/ipq60xx/zn_m2`)
-- Source: <https://github.com/LiBwrt/openwrt-6.x.git>
-- Branch: `main-nss`
-- Config: `configs/zn-m2.config`
-- Custom script: `libwrt.sh`
-- Workflow: `.github/workflows/ZN-M2.yml`
-- Release tag: `ZN-M2-6.12-NSS`
+- 1G HomeProxy: `.github/workflows/ZN-M2-1G-HomeProxy.yml`
+  - Config: `configs/zn-m2-1g-homeproxy.config`
+  - Release tag: `ZN-M2-1G-6.12-NSS-HomeProxy`
+  - Includes HomeProxy and sing-box.
+- 128M Performance: `.github/workflows/ZN-M2-128M-Performance.yml`
+  - Config: `configs/zn-m2-128m-performance.config`
+  - Release tag: `ZN-M2-128M-6.12-NSS-Performance`
+  - Removes proxy and web terminal packages, keeps Aurora and performance tuning.
 
-## Included Focus
+Both variants target:
 
 - Qualcomm NSS acceleration options for the `main-nss` branch
-- HomeProxy from ImmortalWrt `homeproxy`, replacing older feed copies
-- `sing-box`
-- TTYD service and LuCI web console
 - Aurora theme, Simplified Chinese LuCI, hostname `ZN-M2`
 - BBR and basic network tuning
 - WiFi and storage-related packages disabled
 
 ## Build
 
-Open GitHub Actions, run the `ZN-M2` workflow manually, and download the
-firmware from the `ZN-M2-6.12-NSS` release after the build completes.
+Open GitHub Actions, run the workflow for the variant you need, and download
+firmware from the matching release tag after the build completes.
 
 Default login after flashing:
 
