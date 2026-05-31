@@ -1,8 +1,12 @@
 # ZN-M2 LiBwrt 6.12 NSS Builds
 
+[![中文](https://img.shields.io/badge/语言-中文-blue)](#中文) [![English](https://img.shields.io/badge/lang-English-red)](#english)
+
 ---
 
-## 中文说明
+<a id="中文"></a>
+
+## 中文
 
 本仓库使用 GitHub Actions 自动编译适用于 **ZN-M2（兆能 M2）** 路由器的 LiBwrt 固件，基于 `openwrt-6.x` 的 `main-nss` 分支，启用 Qualcomm NSS 硬件加速。
 
@@ -37,7 +41,11 @@
 | 用户 | `root` |
 | 密码 | `password` |
 
+[切换到 English](#english)
+
 ---
+
+<a id="english"></a>
 
 ## English
 
@@ -73,3 +81,5 @@ Open GitHub Actions, run the workflow for the variant you need, and download fir
 | Address | `192.168.1.1` |
 | User | `root` |
 | Password | `password` |
+
+[Switch to 中文](#中文)
