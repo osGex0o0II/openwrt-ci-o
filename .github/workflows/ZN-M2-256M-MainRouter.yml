@@ -43,14 +43,14 @@ jobs:
           sudo timedatectl set-timezone "$TZ"
 
       - name: Maximize build space
-        uses: easimon/maximize-build-space@master
+        uses: easimon/maximize-build-space@v1
         with:
           swap-size-mb: 1024
           temp-reserve-mb: 100
           root-reserve-mb: 1024
 
       - name: Checkout
-        uses: actions/checkout@main
+        uses: actions/checkout@v4
 
       - name: Clone source
         run: |
@@ -80,7 +80,7 @@ jobs:
 
       - name: Cache toolchain
         if: env.CACHE_TOOLCHAIN == 'true'
-        uses: HiGarfield/cachewrtbuild@main
+        uses: HiGarfield/cachewrtbuild@v1
         with:
           ccache: false
           mixkey: ${{ env.SOURCE_REPO }}-${{ env.REPO_BRANCH }}-${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}-zn-m2-256m-mainrouter
@@ -129,7 +129,7 @@ jobs:
           ls -lh
           test -f ./*zn_m2*squashfs-factory.ubi
           test -f ./*zn_m2*squashfs-sysupgrade.bin
-          ! ls ./*mango* 1>/dev/null 2>&1
+          ! find . -maxdepth 1 -name '*mango*' -print -quit | grep -q .
           cat sha256sums
           cp "$OPENWRT_PATH/.config" build.config
           mkdir -p packages
@@ -142,9 +142,8 @@ jobs:
 
       - name: Upload firmware artifact
         if: steps.compile.outputs.status == 'success' && env.FIRMWARE_RELEASE != 'true'
-        uses: actions/upload-artifact@main
+        uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.SOURCE_REPO }}-${{ env.FIRMWARE_TAG }}-${{ env.FILE_DATE }}
           path: ${{ env.FIRMWARE_PATH }}
 
       - name: Publish release
