@@ -4,12 +4,8 @@
 
 **为 ZN-M2（兆能 M2）路由器编译的 Qualcomm NSS 硬件加速固件**
 
-[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/osGex0o0II/openwrt-ci-o/ZN-M2-1G-ProxyGateway.yml?branch=main&label=Proxy%20Gateway%20Build
-
-&logo=github&style=for-the-badge)](https://github.com/osGex0o0II/openwrt-ci-o/actions/workflows/ZN-M2-1G-ProxyGateway.yml)
-[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/osGex0o0II/openwrt-ci-o/ZN-M2-256M-MainRouter.yml?branch=main&label=Main%20Router%20Build
-
-&logo=github&style=for-the-badge)](https://github.com/osGex0o0II/openwrt-ci-o/actions/workflows/ZN-M2-256M-MainRouter.yml)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/osGex0o0II/openwrt-ci-o/ZN-M2-1G-ProxyGateway.yml?branch=main&label=Proxy%20Gateway%20Build&logo=github&style=for-the-badge)](https://github.com/osGex0o0II/openwrt-ci-o/actions/workflows/ZN-M2-1G-ProxyGateway.yml)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/osGex0o0II/openwrt-ci-o/ZN-M2-256M-MainRouter.yml?branch=main&label=Main%20Router%20Build&logo=github&style=for-the-badge)](https://github.com/osGex0o0II/openwrt-ci-o/actions/workflows/ZN-M2-256M-MainRouter.yml)
 [![OpenWrt](https://img.shields.io/badge/OpenWrt-6.12-00B5E2?logo=openwrt&logoColor=white&style=for-the-badge)](https://openwrt.org)
 [![License](https://img.shields.io/github/license/osGex0o0II/openwrt-ci-o?style=for-the-badge)](LICENSE)
 
