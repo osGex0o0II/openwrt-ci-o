@@ -1,0 +1,14 @@
+# Local assets not referenced in README.
+images/
+
+# OS litter.
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Build artifacts (local copies).
+*.bin
+*.ubi
+*.tar.gz
