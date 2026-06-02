@@ -18,4 +18,5 @@ openwrt/
 
 # Env files.
 .env
+.venv/
 *.log
