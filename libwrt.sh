@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+echo "========== Apply custom patches =========="
+for patch in "$GITHUB_WORKSPACE"/patches/*.patch; do
+	[ -f "$patch" ] && patch -p1 --forward < "$patch" || true
+done
+
 echo "========== Inject Aurora theme =========="
 rm -rf package/luci-theme-aurora
 git clone --depth=1 https://github.com/eamonxg/luci-theme-aurora package/luci-theme-aurora

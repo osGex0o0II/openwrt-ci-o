@@ -98,7 +98,8 @@ jobs:
 
       - name: Apply custom files and packages
         run: |
-          [ -d files ] && mkdir -p "$OPENWRT_PATH/files" && cp -a files/. "$OPENWRT_PATH/files/"
+          mkdir -p "$OPENWRT_PATH/files"
+          [ -d files ] && cp -a files/. "$OPENWRT_PATH/files/"
           [ -n "$VARIANT_FILES" ] && [ -d "$VARIANT_FILES" ] && cp -a "$VARIANT_FILES"/. "$OPENWRT_PATH/files/"
           cp "$CONFIG_FILE" "$OPENWRT_PATH/.config"
           dos2unix "$DIY_SCRIPT"

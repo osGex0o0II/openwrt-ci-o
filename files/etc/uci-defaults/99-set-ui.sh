@@ -17,13 +17,10 @@ uci commit firewall
 uci -q set upnpd.config.enabled='1'
 uci commit upnpd
 
-# 流量统计默认采集 LAN 网桥。
-uci -q set luci_statistics.collectd_interface.Interface='br-lan'
-uci commit luci_statistics
-
 # WAN 口默认 DHCP 客户端（即插即用）。
 uci -q set network.wan.proto='dhcp'
 uci -q set network.wan6.proto='dhcpv6'
+uci -q set network.wan6.reqprefix='auto'
 
 # WAN SSH 加固：dropbear 仅监听 LAN 接口。
 uci -q set dropbear.@dropbear[0].Interface='lan'
