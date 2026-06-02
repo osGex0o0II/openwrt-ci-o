@@ -6,7 +6,7 @@ uci -q set dhcp.@dnsmasq[0].min_cache_ttl='1800'
 uci -q set dhcp.@dnsmasq[0].allservers='1'
 uci -q commit dhcp
 
-# File descriptor limits for proxy workloads. Keep this idempotent because
+# File descriptor limits for router workloads. Keep this idempotent because
 # uci-defaults scripts can be retried if any earlier command fails.
 mkdir -p /etc/security
 touch /etc/security/limits.conf

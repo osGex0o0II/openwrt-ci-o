@@ -3,7 +3,7 @@ set -euo pipefail
 
 echo "========== Apply custom patches =========="
 for patch in "$GITHUB_WORKSPACE"/patches/*.patch; do
-	[ -f "$patch" ] && patch -p1 --forward < "$patch" || true
+  [ -f "$patch" ] && patch -p1 --forward < "$patch" || true
 done
 
 echo "========== Inject Aurora theme =========="
