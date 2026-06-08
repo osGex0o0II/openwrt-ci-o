@@ -5,9 +5,14 @@ uci -q set luci.main.lang='zh_cn'
 uci -q set luci.main.mediaurlbase='/luci-static/aurora'
 uci -q set system.@system[0].hostname='ZN-M2'
 
-# Firewall offloading: disabled by default for NSS compatibility.
-# NSS and OpenWrt flow offloading can conflict (qosmio/openwrt-ipq#nss-warning).
-# Enable via LuCI only if you understand the interaction with NSS.
+# Firewall offloading: 默认关闭以兼容 NSS 硬件加速。
+# NSS（Network Subsystem）在 IPQ60xx 上接管 NAT/路由数据面处理。
+# OpenWrt 软件 flow offloading（nftables flowtable）与 NSS 存在以下冲突：
+#   1. 两者竞争数据包处理路径，导致冗余处理及错误
+#   2. 硬件卸载被软件 offloading 打断，无法发挥 NSS 性能
+#   3. 极端情况下出现节点黑洞（qosmio/openwrt-ipq 已确认）
+# 参考：qosmio/openwrt-ipq#nss-warning
+# 如需启用，请通过 LuCI -> 防火墙 -> 流量分载 手动打开
 uci -q set firewall.@defaults[0].flow_offloading='0'
 uci -q set firewall.@defaults[0].flow_offloading_hw='0'
 

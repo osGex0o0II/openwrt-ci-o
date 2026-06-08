@@ -2,6 +2,10 @@
 set -euo pipefail
 
 # USB 仅用于供电，不保留数据功能，两个变体均禁用。
+# 禁用节点（target/linux/qualcommax/dts/ipq6000-m2.dts）：
+#   &usb2 / &usb3 — USB 2.0/3.0 控制器
+#   &qusb_phy_0 / &qusb_phy_1 / &ssphy_0 — 配套 PHY
+# 幂等性：已有 status="disabled" 标记时跳过，不重复追加
 echo "========== Disable ZN-M2 USB controllers =========="
 if ! grep -qE '&usb2\s*\{[^}]*status\s*=\s*"disabled"' target/linux/qualcommax/dts/ipq6000-m2.dts; then
 	cat >> target/linux/qualcommax/dts/ipq6000-m2.dts << 'DTSEND'
