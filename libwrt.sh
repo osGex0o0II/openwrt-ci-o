@@ -25,6 +25,13 @@ echo "========== Inject Aurora theme =========="
 rm -rf package/luci-theme-aurora
 git clone --depth=1 https://github.com/eamonxg/luci-theme-aurora package/luci-theme-aurora
 
+# Fix: 内核 6.12.91 新增 ALLOC_SKB_PAGE_FRAG_DISABLE，上游 config-6.12 未覆盖，
+#      导致 make syncconfig 在 (NEW) 符号上非交互退出，编译立即失败。
+if ! grep -q '^CONFIG_ALLOC_SKB_PAGE_FRAG_DISABLE=' target/linux/qualcommax/config-6.12; then
+	echo "CONFIG_ALLOC_SKB_PAGE_FRAG_DISABLE=n" >> target/linux/qualcommax/config-6.12
+	echo "Added CONFIG_ALLOC_SKB_PAGE_FRAG_DISABLE=n to qualcommax/config-6.12"
+fi
+
 if [ "${INCLUDE_HOMEPROXY:-1}" != "1" ]; then
   echo "========== Skip HomeProxy for this build variant =========="
   exit 0
