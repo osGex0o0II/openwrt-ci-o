@@ -23,8 +23,5 @@ uci -q add_list dhcp.@dnsmasq[0].server='223.5.5.5'
 uci -q add_list dhcp.@dnsmasq[0].server='119.29.29.29'
 uci commit dhcp
 
-# Conntrack limit — cap at 16K to save ~15MB peak RAM on 160MB device.
-echo 16384 > /proc/sys/net/netfilter/nf_conntrack_max
-
 exit 0
 
