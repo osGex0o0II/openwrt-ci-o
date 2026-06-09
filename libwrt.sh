@@ -2,10 +2,10 @@
 set -euo pipefail
 
 # 动态检测内核主版本（6.12、6.18 等），避免硬编码路径
-# LiBwrt 文件名格式：target/linux/generic/kernel-6.12（无 .mk 后缀）
-KERNEL_VER="$(ls target/linux/generic/kernel-[0-9]* 2>/dev/null | head -1 | sed 's|.*/kernel-||')"
+# 权威来源：target/linux/qualcommax/Makefile 中的 KERNEL_PATCHVER
+KERNEL_VER="$(grep -E '^KERNEL_PATCHVER:=' target/linux/qualcommax/Makefile 2>/dev/null | sed 's/.*:=//;s/^[[:space:]]*//')"
 if [ -z "$KERNEL_VER" ]; then
-  echo "ERROR: Could not detect kernel version from target/linux/generic/kernel-*" >&2
+  echo "ERROR: Could not detect KERNEL_PATCHVER from target/linux/qualcommax/Makefile" >&2
   exit 1
 fi
 KERNEL_CFG="target/linux/qualcommax/config-${KERNEL_VER}"
