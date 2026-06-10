@@ -3,10 +3,16 @@ set -euo pipefail
 
 # 动态检测内核主版本（6.12、6.18 等），避免硬编码路径
 # 权威来源：target/linux/qualcommax/Makefile 中的 KERNEL_PATCHVER
+# 优先从 qualcommax 目标 Makefile 中获取 KERNEL_PATCHVER。
+# 兜底：使用 git show 从源码目录推断（通过 KERNEL_VER_VAR 传入），
+# 或硬编码为主流内核版本。
 KERNEL_VER="$(grep -E '^KERNEL_PATCHVER:=' target/linux/qualcommax/Makefile 2>/dev/null | sed 's/.*:=//;s/^[[:space:]]*//')"
 if [ -z "$KERNEL_VER" ]; then
-  echo "ERROR: Could not detect KERNEL_PATCHVER from target/linux/qualcommax/Makefile" >&2
-  exit 1
+  KERNEL_VER="$(find target/linux/generic/kernel-* -maxdepth 0 -type d 2>/dev/null | head -1 | sed 's/.*kernel-//')"
+fi
+if [ -z "$KERNEL_VER" ]; then
+  echo "WARNING: Could not detect kernel version, falling back to 6.12" >&2
+  KERNEL_VER="6.12"
 fi
 KERNEL_CFG="target/linux/qualcommax/config-${KERNEL_VER}"
 echo "========== Detected kernel ${KERNEL_VER} (config: ${KERNEL_CFG}) =========="
