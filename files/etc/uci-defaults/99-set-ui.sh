@@ -33,17 +33,14 @@ uci -q set dropbear.@dropbear[0].DirectInterface='lan'
 uci -q set dropbear.@dropbear[0]._direct='1'
 uci -q delete dropbear.@dropbear[0].Interface
 
-# 删除 WAN 的 ICMP ping 放行规则（按特征匹配，不依赖规则名称）。
-# 删除后索引不递增（uci delete 后索引自动前移）。
-idx=0
-while uci -q get firewall.@rule[$idx] >/dev/null 2>&1; do
-  src="$(uci -q get firewall.@rule[$idx].src 2>/dev/null || true)"
-  proto="$(uci -q get firewall.@rule[$idx].proto 2>/dev/null || true)"
-  target="$(uci -q get firewall.@rule[$idx].target 2>/dev/null || true)"
-  if [ "$src" = "wan" ] && [ "$proto" = "icmp" ] && [ "$target" = "ACCEPT" ]; then
-    uci -q delete firewall.@rule[$idx]
-  else
-    idx=$((idx + 1))
+# 删除 WAN 的 ICMP ping 放行规则（按特征匹配，不依赖脆弱的索引）。
+# 通过 uci show 获取 canonical section name 后精准删除，避免索引前移问题。
+uci show firewall 2>/dev/null | sed -n 's/^firewall\.\(cfg[0-9a-f]*\|@rule\[[0-9]*\]\)\.src=wan$/\1/p' | while read -r section; do
+  proto="$(uci -q get "firewall.${section}.proto" 2>/dev/null || true)"
+  target="$(uci -q get "firewall.${section}.target" 2>/dev/null || true)"
+  if [ "$proto" = "icmp" ] && [ "$target" = "ACCEPT" ]; then
+    uci -q delete "firewall.${section}"
+    echo "Deleted WAN ICMP ACCEPT rule: firewall.${section}"
   fi
 done
 

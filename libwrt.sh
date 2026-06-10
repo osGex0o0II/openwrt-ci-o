@@ -18,6 +18,8 @@ echo "========== Detected kernel ${KERNEL_VER} (config: ${KERNEL_CFG}) =========
 # 幂等性：用注释哨兵标记，避免正则跨行匹配问题
 echo "========== Disable ZN-M2 USB controllers =========="
 if ! grep -q 'USB_DISABLED_BY_BUILDER' target/linux/qualcommax/dts/ipq6000-m2.dts 2>/dev/null; then
+	cp target/linux/qualcommax/dts/ipq6000-m2.dts target/linux/qualcommax/dts/ipq6000-m2.dts.bak
+	echo "Backed up DTS to ipq6000-m2.dts.bak"
 	cat >> target/linux/qualcommax/dts/ipq6000-m2.dts << 'DTSEND'
 
 /* USB_DISABLED_BY_BUILDER */
@@ -71,14 +73,23 @@ rm -rf \
 # Use fetch+checkout instead of shallow clone+checkout: --depth=1 only fetches
 # the branch tip, so checkout would fail if the pinned hash is not the tip.
 HOMEPROXY_COMMIT="29f61caf303cd3a7051e26055dc97fdf4890e2b0"
+# SHA256 校验基准值：此 hash 对应 HOMEPROXY_COMMIT 状态下 Makefile 的摘要。
+# 更新 HOMEPROXY_COMMIT 时，需同步更新此 hash。
+HOMEPROXY_MAKEFILE_SHA256="95716db574f46fa7b67b94e5ac5ae5647c9ac987eb16e1b854e24a9892085a22"
 git clone https://github.com/immortalwrt/homeproxy package/luci-app-homeproxy
 cd package/luci-app-homeproxy
 git -c advice.detachedHead=false checkout "$HOMEPROXY_COMMIT"
-cd "$OLDPWD"
 
-if [ ! -f package/luci-app-homeproxy/Makefile ]; then
-  echo "ERROR: HomeProxy Makefile not found after clone" >&2
+# 完整性验证：对关键文件 Makefile 做 SHA256 校验，防止拉取到篡改代码
+COMPUTED_SHA256="$(sha256sum Makefile 2>/dev/null | awk '{print $1}')"
+if [ "$COMPUTED_SHA256" != "$HOMEPROXY_MAKEFILE_SHA256" ]; then
+  echo "ERROR: HomeProxy Makefile SHA256 mismatch!" >&2
+  echo "  Expected: ${HOMEPROXY_MAKEFILE_SHA256}" >&2
+  echo "  Got:      ${COMPUTED_SHA256:-<file not found>}" >&2
+  echo "  This may indicate code tampering or HOMEPROXY_COMMIT needs updating." >&2
   exit 1
 fi
+echo "HomeProxy Makefile integrity verified (SHA256 match)"
+cd "$OLDPWD"
 
 echo "========== Custom package sources ready =========="
