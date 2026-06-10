@@ -91,6 +91,6 @@ if [ "$COMPUTED_SHA256" != "$HOMEPROXY_MAKEFILE_SHA256" ]; then
   exit 1
 fi
 echo "HomeProxy Makefile integrity verified (SHA256 match)"
-cd - > /dev/null || exit 1
+cd "$OLDPWD" || exit 1
 
 echo "========== Custom package sources ready =========="
