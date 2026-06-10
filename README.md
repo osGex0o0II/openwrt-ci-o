@@ -4,8 +4,8 @@
 
 **为 ZN-M2（兆能 M2）路由器编译的 Qualcomm NSS 硬件加速固件**
 
-[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/osGex0o0II/ZN-M2-LiBwrt-Builder/ZN-M2-1G-ProxyGateway.yml?branch=main&label=1G%20Build&logo=github&style=for-the-badge)](https://github.com/osGex0o0II/ZN-M2-LiBwrt-Builder/actions/workflows/ZN-M2-1G-ProxyGateway.yml)
-[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/osGex0o0II/ZN-M2-LiBwrt-Builder/ZN-M2-256M-MainRouter.yml?branch=main&label=256M%20Build&logo=github&style=for-the-badge)](https://github.com/osGex0o0II/ZN-M2-LiBwrt-Builder/actions/workflows/ZN-M2-256M-MainRouter.yml)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/osGex0o0II/ZN-M2-LiBwrt-Builder/zn-m2-1g-proxy-gateway.yml?branch=main&label=1G%20Build&logo=github&style=for-the-badge)](https://github.com/osGex0o0II/ZN-M2-LiBwrt-Builder/actions/workflows/zn-m2-1g-proxy-gateway.yml)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/osGex0o0II/ZN-M2-LiBwrt-Builder/zn-m2-256m-main-router.yml?branch=main&label=256M%20Build&logo=github&style=for-the-badge)](https://github.com/osGex0o0II/ZN-M2-LiBwrt-Builder/actions/workflows/zn-m2-256m-main-router.yml)
 [![OpenWrt](https://img.shields.io/badge/OpenWrt-6.12-00B5E2?logo=openwrt&logoColor=white&style=for-the-badge)](https://openwrt.org)
 [![License](https://img.shields.io/github/license/osGex0o0II/ZN-M2-LiBwrt-Builder?style=for-the-badge)](LICENSE)
 

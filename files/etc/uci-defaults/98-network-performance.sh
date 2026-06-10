@@ -9,8 +9,6 @@ uci -q set dhcp.@dnsmasq[0].min_cache_ttl='600'
 uci -q set dhcp.@dnsmasq[0].allservers='1'
 uci -q commit dhcp
 
-uci commit dhcp
-
 # 上游公共 DNS。
 uci -q del dhcp.@dnsmasq[0].server
 uci -q add_list dhcp.@dnsmasq[0].server='223.5.5.5'
