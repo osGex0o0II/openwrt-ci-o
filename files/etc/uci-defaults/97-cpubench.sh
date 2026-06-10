@@ -6,7 +6,7 @@
 # coremark 不可用或解析失败时回退到静态估算值。
 
 BENCH_LOG="/etc/bench.log"
-FALLBACK=" (CPU Mark: 18000 Score)"
+FALLBACK=" (CPU Mark: 20000 Score)"
 COREMARK_OUT="/tmp/coremark.log"
 
 # 幂等性：已有缓存则跳过，避免系统升级/手动触发时重复跑 CoreMark（~30s）
