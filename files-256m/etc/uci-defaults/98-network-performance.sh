@@ -17,4 +17,3 @@ uci -q add_list dhcp.@dnsmasq[0].server='119.29.29.29'
 uci commit dhcp
 
 exit 0
-

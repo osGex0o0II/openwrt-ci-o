@@ -37,6 +37,7 @@ fi
 echo "========== Inject Aurora theme =========="
 rm -rf package/luci-theme-aurora
 if ! git clone --depth=1 https://github.com/eamonxg/luci-theme-aurora package/luci-theme-aurora; then
+  rm -rf package/luci-theme-aurora
   echo "ERROR: Failed to clone luci-theme-aurora" >&2
   exit 1
 fi
@@ -90,6 +91,6 @@ if [ "$COMPUTED_SHA256" != "$HOMEPROXY_MAKEFILE_SHA256" ]; then
   exit 1
 fi
 echo "HomeProxy Makefile integrity verified (SHA256 match)"
-cd "$OLDPWD"
+cd - > /dev/null || exit 1
 
 echo "========== Custom package sources ready =========="
