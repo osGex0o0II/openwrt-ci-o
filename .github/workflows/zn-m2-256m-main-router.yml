@@ -60,7 +60,9 @@ jobs:
           git clone --depth=1 -b "$REPO_BRANCH" "$REPO_URL" openwrt
           if [ -n "$REPO_COMMIT" ]; then
             cd openwrt
-            git -c advice.detachedHead=false checkout "$REPO_COMMIT"
+            # --depth=1 不包含历史 commit，需先 fetch 指定 hash 再 checkout
+            git fetch --depth=1 origin "$REPO_COMMIT"
+            git -c advice.detachedHead=false checkout FETCH_HEAD
             cd "$OLDPWD"
           fi
           cd openwrt
