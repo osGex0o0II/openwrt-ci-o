@@ -15,7 +15,6 @@ env:
   VARIANT_FILES: files-256m
   # 锁定上游源码 commit（留空则使用分支最新 HEAD）。
   REPO_COMMIT: ""
-  CACHE_TOOLCHAIN: true
   UPLOAD_BIN_DIR: false
   FIRMWARE_RELEASE: true
   FIRMWARE_TAG: zn-m2-256m
@@ -92,13 +91,11 @@ jobs:
             echo "VERSION_KERNEL=${kernel_version:-6.12}"
           } | tee -a "$GITHUB_ENV" "$GITHUB_OUTPUT"
 
-      - name: Cache toolchain
-        if: env.CACHE_TOOLCHAIN == 'true'
-        uses: HiGarfield/cachewrtbuild@3c396d6d42253c392a1c7c2ca996869c3d5b5853
+      - name: Cache dl (source packages)
+        uses: actions/cache@v4
         with:
-          ccache: false
-          mixkey: ${{ steps.detect_target.outputs.SOURCE_REPO }}-${{ env.REPO_BRANCH }}-${{ steps.detect_target.outputs.DEVICE_TARGET }}-${{ steps.detect_target.outputs.DEVICE_SUBTARGET }}-zn-m2-256m-mainrouter-${{ steps.clone_source.outputs.SOURCE_REPO_COMMIT_SHORT }}
-          prefix: ${{ steps.clone_source.outputs.OPENWRT_PATH }}
+          path: ${{ steps.clone_source.outputs.OPENWRT_PATH }}/dl
+          key: openwrt-dl-${{ steps.detect_target.outputs.DEVICE_TARGET }}-${{ steps.detect_target.outputs.DEVICE_SUBTARGET }}
 
       - name: Install feeds
         run: |
